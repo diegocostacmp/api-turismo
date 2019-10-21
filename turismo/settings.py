@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.atracao',
     'apps.comentario',
     'apps.avaliacao',
+    'apps.endereco',
 ]
 
 MIDDLEWARE = [
