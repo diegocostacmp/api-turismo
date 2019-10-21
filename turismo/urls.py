@@ -7,12 +7,14 @@ from apps.core.api.viewsets import PontoTuristicoViewSet
 from apps.atracao.api.viewsets import AtracaoViewSet
 from apps.endereco.api.viewsets import EnderecoViewSet
 from apps.comentario.api.viewsets import ComentarioViewSet
+from apps.avaliacao.api.viewsets import AvaliacaoViewSet
 
 router = routers.DefaultRouter()
 router.register(r'pontoturistico', PontoTuristicoViewSet)
 router.register(r'atracao', AtracaoViewSet)
 router.register(r'endereco', EnderecoViewSet)
 router.register(r'comentario', ComentarioViewSet)
+router.register(r'avaliacao', AvaliacaoViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
