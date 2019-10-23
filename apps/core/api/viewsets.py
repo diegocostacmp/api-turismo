@@ -5,9 +5,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 class PontoTuristicoViewSet(ModelViewSet):
+    
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -17,7 +18,14 @@ class PontoTuristicoViewSet(ModelViewSet):
     filter_backends = [SearchFilter]
 
     # Requer autenticacao do usuario
-    permission_classes = [IsAuthenticated]
+    # Caso o usuario necessite ser adm use: IsAdminUser
+    # Para maior entendimento verifique os
+    # metodos de autenticacao
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # Requer que o usuario seja Admin
+
 
     # Como sera o usuario sera autenticado
     authentication_classes = [TokenAuthentication]
