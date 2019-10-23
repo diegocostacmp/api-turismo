@@ -3,20 +3,51 @@ from apps.core.models import PontoTuristico
 from .serializers import PontoTuristicoSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 class PontoTuristicoViewSet(ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
     # model = PontoTuristico.objects.filter(aprovado=True)
     serializer_class = PontoTuristicoSerializer
-
     
+    filter_backends = [SearchFilter]
+
+    # Requer autenticacao do usuario
+    permission_classes = [IsAuthenticated]
+
+    # Como sera o usuario sera autenticado
+    authentication_classes = [TokenAuthentication]
+
+    # Campos para pesquisa na url, "?search=nome or descricao"
+    search_fields = ('id','nome', 'descricao', 'endereco__linha1')
+    
+    # Este campo retorna apenas um objeto,
+    # normalmente a pk do objeto
+    lookup_field = 'aprovado'
 
     # filtro personalizado, que pode contem
     # multiplos queryset
     def get_queryset(self):
-        return PontoTuristico.objects.filter(aprovado=True)
+
+        # Filtro utilizando queryString na url
+        id = self.request.query_params.get('id', None)
+        nome = self.request.query_params.get('nome', None)
+        descricao = self.request.query_params.get('descricao', None)
+        
+        queryset = PontoTuristico.objects.all()
+        if id:
+            queryset = PontoTuristico.objects.filter(pk=id)
+        if nome:
+            queryset = queryset.filter(nome=nome)
+        
+        if descricao:
+            queryset = queryset.filter(descricao__iexact=descricao)
+        
+        return queryset
     
     # Sobreescrevendo o metodo GET
     # de listagem
