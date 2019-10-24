@@ -5,6 +5,10 @@ from apps.avaliacao.models import Avaliacao
 from apps.endereco.models import Endereco
 
 
+class DocIdentificacao(models.Model):
+    descricao = models.CharField(max_length=100)
+
+
 class PontoTuristico(models.Model):
     nome = models.CharField(max_length=150)
     descricao = models.TextField()
@@ -14,5 +18,7 @@ class PontoTuristico(models.Model):
     avaliacao = models.ManyToManyField(Avaliacao)
     endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE, blank=True, null=True)
     foto = models.ImageField(upload_to='ponto_turistico', blank=True, null=True)
+    doc_identificacao = models.OneToOneField(DocIdentificacao, on_delete=models.CASCADE, blank=True, null=True)
+    
     def __str__(self):
         return self.nome

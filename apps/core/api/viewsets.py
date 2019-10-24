@@ -88,5 +88,3 @@ class PontoTuristicoViewSet(ModelViewSet):
     # @action(method=['get'], detail=True)
     # def denunciar(self, request, pk=None):
     #     pass
-
-    
